@@ -49,18 +49,6 @@ def get_policy_doc():
             - Data Privacy Controls.
     """
 
-
-async def run_llm(llm, prompt):
-    """
-    Runs the llm with the given prompt.
-    """
-    try:
-        response = await ollama.generate(model=llm, prompt=prompt)  # changed here to use only ollama
-        return response['response']
-    except Exception as e:
-        return f"Error running ollama: {e}"
-
-
 def create_visualizations(report_data: str) -> Dict[str, Any]:
     """
     Creates visualizations based on the given report data.
