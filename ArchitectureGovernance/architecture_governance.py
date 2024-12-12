@@ -1,6 +1,6 @@
 import os
 from crewai import Agent, Task, Crew
-from langchain_openai import ChatOpenAI  # we keep ChatOpenAI for other LLMs
+from langchain_openai import ChatOpenAI  
 from langchain.tools import tool
 import json
 import plotly.graph_objects as go
@@ -11,16 +11,11 @@ import asyncio
 from typing import Any, Dict
 
 
-# If using Ollama this is not needed
-# Set your OpenAI API key
-# os.environ["OPENAI_API_KEY"] = "YOUR_OPENAI_API_KEY" # Replace with your actual API key
-
 # Set the environment variable to tell Langchain to use Ollama
 os.environ["OPENAI_API_BASE"] = "http://localhost:11434/v1"
 os.environ["OPENAI_API_KEY"] = "ollama"  # dummy key
 
 # ---- Custom Tools ----
-
 # Mock CMDB Data (Replace with your actual API calls or DB connections)
 @tool("get_cmdb_data")
 def get_cmdb_data():
@@ -48,17 +43,6 @@ def get_policy_doc():
         GDPR requires all applications to have the following:
             - Data Privacy Controls.
     """
-
-
-async def run_llm(llm, prompt):
-    """
-    Runs the llm with the given prompt.
-    """
-    try:
-        response = await ollama.generate(model=llm, prompt=prompt)  # changed here to use only ollama
-        return response['response']
-    except Exception as e:
-        return f"Error running ollama: {e}"
 
 
 def create_visualizations(report_data: str) -> Dict[str, Any]:
@@ -115,7 +99,7 @@ def create_visualizations(report_data: str) -> Dict[str, Any]:
 
 
 if __name__ == "__main__":
-    # Using an Ollama model, adjust model name to match the one you downloaded from Ollama
+    # Using an Ollama model
     ollama_model = "ollama/llama3:latest"
 
     # Create a ChatOpenAI instance for Ollama (you can use any openai compatible LLM)
@@ -123,8 +107,10 @@ if __name__ == "__main__":
         base_url=os.environ["OPENAI_API_BASE"],
         api_key=os.environ["OPENAI_API_KEY"],
         model=ollama_model,
-        temperature=0  # set to zero to reduce stochasticity
+        temperature=0  
     )
+
+    # ---- Agent Definitions ----
 
     # Architecture Data Aggregator
     data_aggregator_agent = Agent(
@@ -134,7 +120,7 @@ if __name__ == "__main__":
         verbose=True,
         allow_delegation=True,
         tools=[get_cmdb_data],
-        llm=llm_langchain  # this is the change - passing langchain compatible LLM object
+        llm=llm_langchain  
     )
 
     # Compliance and Policy Validator
@@ -145,7 +131,7 @@ if __name__ == "__main__":
         verbose=True,
         allow_delegation=True,
         tools=[get_policy_doc],
-        llm=llm_langchain  # this is the change - passing langchain compatible LLM object
+        llm=llm_langchain  
     )
 
     # Risk and Impact Assessor
@@ -155,7 +141,7 @@ if __name__ == "__main__":
         backstory="Expert in risk analysis and dependency management in IT architectures.",
         verbose=True,
         allow_delegation=True,
-        llm=llm_langchain  # this is the change - passing langchain compatible LLM object
+        llm=llm_langchain  
     )
 
     # Remediation and Recommendation Agent
@@ -165,7 +151,7 @@ if __name__ == "__main__":
         backstory="Expert in best practices, solution catalogs, and remediation strategies.",
         verbose=True,
         allow_delegation=True,
-        llm=llm_langchain  # this is the change - passing langchain compatible LLM object
+        llm=llm_langchain  
     )
     # Reporting and Visualization Agent
     report_agent = Agent(
@@ -174,7 +160,7 @@ if __name__ == "__main__":
         backstory="Expert in creating executive summaries, detailed compliance reports, and risk heatmaps.",
         verbose=True,
         allow_delegation=True,
-        llm=llm_langchain  # this is the change - passing langchain compatible LLM object
+        llm=llm_langchain  
     )
 
     # ---- Tasks ----
