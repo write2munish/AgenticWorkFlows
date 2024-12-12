@@ -22,7 +22,7 @@ def get_cmdb_data():
     """Retrieves application details from a mock CMDB."""
     # In a real scenario, this would involve connecting to a CMDB API or database
     cmdb_data = [
-        {"application": "App1", "owner": "Team A", "deployment_env": "prod", "compliance": ["PCI","SOC2"]},
+        {"application": "App1", "owner": "Team A", "deployment_env": "prod", "compliance": ["PCI"]},
         {"application": "App2", "owner": "Team B", "deployment_env": "dev", "compliance": []},
         {"application": "App3", "owner": "Team A", "deployment_env": "prod", "compliance": ["SOC2"]},
         {"application": "App4", "owner": "Team C", "deployment_env": "staging", "compliance": ["GDPR","PCI","SOC2"]}
