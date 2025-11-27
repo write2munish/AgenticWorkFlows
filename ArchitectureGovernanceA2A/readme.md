@@ -1,4 +1,3 @@
-i```markdown
 # Automated Compliance Governance Pipeline with Google ADK & GenAI
 
 ## Introduction
